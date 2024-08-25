@@ -7,7 +7,7 @@
 4.ESP8266/ESP32 (for WiFi connectivity if needed)<br>
 5.Resistors, wires, breadboard, etc.<br>
 <br>]
-#include <Wire.h><br>
+#include <Wire.h> //<br>
 #include <Adafruit_BMP085.h>  // Library for BMP180/BMP085 sensors<br>
 #include <ESP8266WiFi.h>      // Library for WiFi connectivity<br>
 #include <ESP8266WebServer.h> // Library for web server functionality<br>
