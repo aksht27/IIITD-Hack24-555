@@ -7,7 +7,7 @@
 4.ESP8266/ESP32 (for WiFi connectivity if needed)<br>
 5.Resistors, wires, breadboard, etc.<br>
 <br>
-<h3>>Explanation:</h3
+<h3>Explanation:</h3
 Water Pressure Sensors: The code assumes that you have two BMP180 sensors, one for measuring the input water pressure and one for the output water pressure. The pressure readings are converted from Pascals to hPa (hectopascals).<br>
 Flow Sensor: The flow sensor calculates the flow rate in liters per minute and the total water passed in liters.<br>
 WiFi Module: The ESP8266 is used to connect to a WiFi network and serve a web page with the sensor data.<br>
