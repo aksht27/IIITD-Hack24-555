@@ -1,0 +1,239 @@
+
+.main{
+    width:100%;
+    height:100vh;
+    position:absolute;
+    display:flex;
+    align-items: center;
+    justify-content:center;
+    flex-direction: column;
+}
+.nav1{
+    position: fixed;
+    top: 20px;
+    left: 0;
+    display:flex;
+    align-items: center;
+    justify-content: space-between;
+ z-index: 1;}
+.nav1 ul li{
+    display: inline-block;
+    margin-left: 40px;
+    color: aliceblue;
+    text-shadow: 2px 2px  black;
+}
+.nav1 ul li a{
+  text-decoration: none;
+  font-size: 17px;
+  color: aliceblue;
+  text-shadow: 2px 2px  black;
+}
+.contact{
+  text-decoration: none;
+position: fixed;
+  color: white;
+ top: 27px;
+ left:250px;
+  text-shadow: 2px 2px  black;
+  cursor: pointer;
+}
+.drop-down{
+  position: relative;
+  background: green;
+color: white;
+box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+border-radius: 0.5rem;
+font-size: 15px;
+text-shadow: 2px 2px  black;
+}
+.dropdown-icon{
+  display: flex;
+  position: relative;
+  top: 5px;
+transform: rotate(0deg);
+transition: 0.3s ease-in-out;
+}
+.contact:hover .dropdown-icon{
+  transform: rotate(180deg);
+}
+.drop-down li{
+list-style:  none;
+position: relative;
+font-weight: 600;
+cursor: pointer;
+text-shadow: 3px 3px  black;
+}
+.contact:hover .drop-down {
+
+  display: block;
+}
+.contact.active .dropdown-icon {
+  transform: rotate(180deg);
+}
+.nav2{
+    position: fixed;
+    top: 25px;
+    left: 1050px;
+    justify-content: space-between;
+    display: flex;
+}
+  .nav2 ul li{
+    list-style: none;
+    display: inline-block;
+    margin-left: 40px;
+    color: aliceblue;
+}
+.nav2 ul li a{
+    text-decoration: none;
+    font-size: 17px;
+    color: aliceblue;
+    display: inline-block;
+    text-shadow: 2px 2px  black;
+}
+  .back-video{
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    z-index: -2;
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-attachment: fixed ;
+  }
+  @media(min-aspect-ratio:16/9){
+    .back-video{
+        width: 100%;
+        height:auto;
+    }
+  }
+  
+  @media(max-aspect-ratio:16/9){
+    .back-video{
+        width: auto;
+        height:100%;
+    }
+  }
+
+body{
+  display: flex;
+  justify-content: flex-end;
+  min-height: 100vh;
+align-items: flex-end;
+margin: 0;
+padding: 0;
+}
+  footer{
+position: relative;
+  width: 100%;
+  height: 100%;
+  background: #3586ff;
+  min-height: 75px;
+padding: 20px 50px;
+display: flex;
+justify-items: center;
+align-items: center;
+justify-content: center;
+flex-direction: column;
+bottom: 0;
+left: 0;
+
+z-index: 1000;
+}
+footer .social_icons,
+footer .menu{
+position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 10px 0;
+}
+footer .social_icons li, footer .menu li{
+  list-style: none;
+}
+footer .social_icons li a{
+  font-size: 2em;
+  color: white;
+  margin: 0 10px;
+  display: inline-block;
+  transition: 0.5s;
+}
+footer .social_icons li a:hover{
+  transform: translateY(-10px);
+}
+footer .menu li a{
+  font-size: 1.2em;
+  color: white;
+  margin: 0 10px;
+  display: inline-block;
+text-decoration: none;
+opacity: 0.75;
+}
+footer .menu li a:hover{
+  opacity: 1;
+}
+footer .wave{
+  position: absolute;
+  top: -75px;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background: url(wave.png) ;
+  background-size:1000px 100px ;
+}
+footer .wave#wave1{
+  z-index: 1000;
+  opacity: 1;
+  bottom: 0;
+  animation: animateWave 4s linear infinite;
+}
+footer .wave#wave2{
+  z-index: 999;
+  opacity: 0.5;
+  bottom: 10px;
+  animation: animateWave_02 4s linear infinite;
+}
+footer .wave#wave3{
+  z-index: 1000;
+  opacity: 0.2;
+  bottom: 15px;
+  animation: animateWave_03 3s linear infinite;
+}
+footer .wave#wave4{
+  z-index: 999;
+  opacity: 0.7;
+  bottom: 20px;
+  animation: animateWave_04 3s linear infinite;
+}
+
+@keyframes animateWave{
+  0%
+  {
+background-position-x:1000px ;
+  }
+  100%
+  {
+background-position-x:0px ;
+  }
+
+}
+@keyframes animateWave_02{
+  0%
+  {
+background-position-x:0px ;
+  }
+  100%
+  {
+background-position-x:1000px ;
+  }
+
+}
+.img {
+  position: absolute;
+  top: 90px;
+  left: 40px;
+}
+
+.img img {
+  width: 300px;
+  height: auto;
+}
+

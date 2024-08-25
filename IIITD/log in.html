@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Index</title>
+    <link rel="stylesheet" type="text/css" href="script.css">
+</head>
+<body>
+    <video autoplay muted loop plays-inlline class="back-video">
+        <source src="save.mp4" type="video/mp4">
+    </video> 
+    <div class="nav1">
+    <nav >
+        <ul><li><a href="index.html">Home</a></li>
+        </div>
+            <div class="wrapper">
+        <div class="form-wrapper sign-in">
+            <form action="" id="loginForm">
+                <h2>Log In</h2>
+                <div class="input-group">
+                    <input type="text" id="login-username" required>
+                    <label for="login-username">Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="login-password" required>
+                    <label for="login-password">Password</label>
+                </div>
+                <div class="remember">
+                    <label><input type="checkbox">Remember me</label>
+                </div>
+                <button type="submit">Log In</button>
+                <div class="signup-link">
+                    <p>Don't have an account? <a href="#" class="signupBtn-Link">Sign up</a></p>
+                </div>
+            </form>
+        </div>
+        <div id="sign" class="form-wrapper sign-up">
+            <form action="" id="signupForm">
+                <h2>Sign Up</h2>
+                <div class="input-group">
+                    <input type="text" id="signup-username" required>
+                    <label for="signup-username">Username</label>
+                </div>
+                <div class="input-group">
+                    <input type="email" id="signup-email" required>
+                    <label for="signup-email">Email</label>
+                </div>
+                <div class="input-group">
+                    <input type="password" id="signup-password" required>
+                    <label for="signup-password">Password</label>
+                </div>
+                <div class="remember">
+                    <label><input type="checkbox">I agree to the terms and conditions.</label>
+                </div>
+                <button type="submit">Sign Up</button>
+                <div class="signup-link">
+                    <p>Already have an account? 
+                    <a href="#" class="signinBtn-Link">Log in</a></p> 
+                </div>
+            </form>
+        </div>
+    </div>
+    <script src="sc.js">
+    </script>
+</body>
+</html>
