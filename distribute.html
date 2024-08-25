@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Water Usage Pie Chart</title>
+    <link href="styles.css" rel="stylesheet" />
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+           margin-top: 350px;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+h1{
+    position: absolute;
+    top: 0;
+    align-items: center;
+    color: #ccc;
+    text-shadow: 2px 2px 2px black;
+}
+        .wrapper {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .chart-wrapper, .input-wrapper, .data-wrapper {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .input-wrapper input {
+            width: calc(100% - 30px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .input-wrapper button {
+            width: 100%;
+            padding: 10px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .input-wrapper button:hover {
+            background-color: #218838;
+        }
+
+        .data-wrapper ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        .data-wrapper li {
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>User Data</h1>
+    <div class="wrapper">
+        <div class="chart-wrapper">
+            <canvas id="waterUsageChart"></canvas>
+        </div>
+
+        <div class="input-wrapper">
+            <h3>Enter Water Usage Categories and Percentages</h3>
+            <input type="text" id="categoriesInput" placeholder="Categories (comma-separated)" value="Bathing,Food Preparation,Laundry,Toilet,Cleaning">
+            <input type="text" id="percentagesInput" placeholder="Percentages (comma-separated)" value="30,20,15,25,10">
+            <button onclick="updateChart()">Update Chart</button>
+        </div>
+
+        <div class="data-wrapper">
+            <h3>Water Usage Breakdown</h3>
+            <ul id="waterUsageData">
+                <!-- Data will be populated here by JavaScript -->
+            </ul>
+        </div>
+    </div>
+
+    <!-- Include Chart.js from CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        // Initial data
+        let categories = ['Bathing', 'Food Preparation', 'Laundry', 'Toilet', 'Cleaning'];
+        let percentages = [30, 20, 15, 25, 10];
+
+        // Create the pie chart
+        const ctx = document.getElementById('waterUsageChart').getContext('2d');
+        const waterUsageChart = new Chart(ctx, {
+            type: 'pie',
+            data: {
+                labels: categories,
+                datasets: [{
+                    data: percentages,
+                    backgroundColor: [
+                        'rgba(54, 162, 235, 0.7)',
+                        'rgba(75, 192, 192, 0.7)',
+                        'rgba(255, 205, 86, 0.7)',
+                        'rgba(255, 99, 132, 0.7)',
+                        'rgba(153, 102, 255, 0.7)'
+                    ],
+                    borderColor: [
+                        'rgba(54, 162, 235, 1)',
+                        'rgba(75, 192, 192, 1)',
+                        'rgba(255, 205, 86, 1)',
+                        'rgba(255, 99, 132, 1)',
+                        'rgba(153, 102, 255, 1)'
+                    ],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                }
+            }
+        });
+
+        // Function to update the chart with user inputs
+        function updateChart() {
+            // Get user inputs
+            const categoriesInput = document.getElementById('categoriesInput').value.split(',').map(item => item.trim());
+            const percentagesInput = document.getElementById('percentagesInput').value.split(',').map(item => parseFloat(item.trim()));
+
+            // Update chart data
+            waterUsageChart.data.labels = categoriesInput;
+            waterUsageChart.data.datasets[0].data = percentagesInput;
+            waterUsageChart.update();
+
+            // Update the data display below the chart
+            const waterUsageList = document.getElementById('waterUsageData');
+            waterUsageList.innerHTML = ''; // Clear existing items
+            categoriesInput.forEach((label, index) => {
+                const listItem = document.createElement('li');
+                listItem.textContent = `${label}: ${percentagesInput[index]}%`;
+                waterUsageList.appendChild(listItem);
+            });
+        }
+
+        // Initialize the chart with default data
+        updateChart();
+    </script>
+</body>
+</html>

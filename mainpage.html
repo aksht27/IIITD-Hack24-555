@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title></title>
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+      rel="stylesheet"
+    ></link>
+    <link href="c.css" rel="stylesheet" />
+    <style>
+     body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            background-color: rgb(15, 15, 160);
+        }
+
+        .container {
+          justify-content: center;
+          
+            align-items: center;
+           position: absolute;   
+          width: 80%;
+          left: 400px;
+            max-width: 800px;
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-group {
+            margin-bottom: 10px;
+        }
+
+        .input-group label {
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .input-group input {
+            padding: 5px;
+            width: 60%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .chart-container {
+            width: 100%;
+            margin-top: 20px;
+        }
+  </style>
+  </head>
+  <body>
+
+    <div class="wrapper">
+      <div class="sidebar">
+        <img src="das-removebg-preview.png">
+        <ul>
+          <li>
+            <a href="index.html"><i class="fas fa-home"></i>Home</a>
+          </li>
+          <li>
+            <a href="#" class="dropdown-toggle" id="maintenance-dropdown"
+              ><i class="fas fa-user"></i>Maintenance</a
+            >
+            <ul class="dropdown-menu" id="maintenance-dropdown-menu">
+              <li><a href="https://www.justdial.com/"><i class="fa fa-phone" aria-hidden="true"></i>Phone no.</a></li>
+            </ul>
+          </li>
+          <li>
+            <a href="https://cwc.gov.in/glacial-lakeswater-bodies-himalayan-region"><i class="fas fa-address-card"></i>About</a>
+          </li>
+          <li>
+            <a href="weather.html">
+              <i class="fas fa-project-diagram"></i>Weather Forecast</a
+            >
+          </li>
+          <li>
+            <a href="distribute.html"><i class="fas fa-industry"></i>Distribution</a>
+          </li>
+          <li>
+            <a href="https://zoom.earth/maps/satellite/"><i class="fas fa-map-pin"></i>Map</a>
+          </li>
+        </ul>
+        <div class="social_media">
+          <a href="#"><i class="fab fa-facebook-f"></i></a>
+          <a href="#"><i class="fab fa-twitter"></i></a>
+          <a href="#"><i class="fab fa-instagram"></i></a>
+        </div>
+      </div>
+        </div>
+      </div>
+    </div>
+    <div class="container">
+      <div class="input-container">
+          <div class="input-group">
+              <label for="timeInput">Time (comma-separated): </label>
+              <input type="text" id="timeInput" placeholder="e.g., 0s, 10s, 20s, 30s">
+          </div>
+          <div class="input-group">
+              <label for="pressure1Input">Pressure1 (comma-separated): </label>
+              <input type="text" id="pressure1Input" placeholder="e.g., 100, 110, 105, 115">
+          </div>
+          <div class="input-group">
+              <label for="pressure2Input">Pressure2 (comma-separated): </label>
+              <input type="text" id="pressure2Input" placeholder="e.g., 90, 95, 92, 97">
+          </div>
+          <button onclick="updateChart()">Update Graph</button>
+      </div>
+
+      <div class="chart-container">
+          <canvas id="pressureChart"></canvas>
+      </div>
+  </div>
+
+  <!-- Include Chart.js from CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+      // Initial empty data
+      let timeLabels = [];
+      let pressure1Data = [];
+      let pressure2Data = [];
+
+      // Chart.js configuration
+      const ctx = document.getElementById('pressureChart').getContext('2d');
+      const pressureChart = new Chart(ctx, {
+          type: 'line',
+          data: {
+              labels: timeLabels,
+              datasets: [
+                  {
+                      label: 'Pressure 1',
+                      data: pressure1Data,
+                      borderColor: 'rgba(255, 99, 132, 1)',
+                      backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                      fill: false,
+                      tension: 0.1,
+                  },
+                  {
+                      label: 'Pressure 2',
+                      data: pressure2Data,
+                      borderColor: 'rgba(54, 162, 235, 1)',
+                      backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                      fill: false,
+                      tension: 0.1,
+                  }
+              ]
+          },
+          options: {
+              scales: {
+                  x: {
+                      title: {
+                          display: true,
+                          text: 'Time (seconds)'
+                      }
+                  },
+                  y: {
+                      title: {
+                          display: true,
+                          text: 'Pressure (Pa)'
+                      }
+                  }
+              }
+          }
+      });
+
+      // Function to update the chart with user inputs and check for leakage
+      function updateChart() {
+          // Get the input values
+          const timeInput = document.getElementById('timeInput').value;
+          const pressure1Input = document.getElementById('pressure1Input').value;
+          const pressure2Input = document.getElementById('pressure2Input').value;
+
+          // Convert comma-separated strings into arrays
+          timeLabels = timeInput.split(',').map(label => label.trim());
+          pressure1Data = pressure1Input.split(',').map(value => parseFloat(value.trim()));
+          pressure2Data = pressure2Input.split(',').map(value => parseFloat(value.trim()));
+
+          // Check for leakage condition
+          for (let i = 0; i < pressure1Data.length; i++) {
+              if (Math.abs(pressure1Data[i] - pressure2Data[i]) > 50) {
+                  alert(`Leakage detected at time ${timeLabels[i]}! Pressure1: ${pressure1Data[i]}, Pressure2: ${pressure2Data[i]}`);
+                  break;
+              }
+          }
+
+          // Update the chart data
+          pressureChart.data.labels = timeLabels;
+          pressureChart.data.datasets[0].data = pressure1Data;
+          pressureChart.data.datasets[1].data = pressure2Data;
+
+          // Re-render the chart
+          pressureChart.update();
+      }
+  </script>
+    <script>
+      {
+        fetch("http://api.weatherapi.com/v1/current.json?key=35c1d0c4121145b1a5c192108242408&q=India") 
+
+.then(res=> res.json())
+.then(data=> console.log(data))
+}
+</script>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const dropdownToggle = document.getElementById('maintenance-dropdown');
+    const dropdownMenu = document.getElementById('maintenance-dropdown-menu');
+
+    // Add click event listener to the dropdown toggle
+    dropdownToggle.addEventListener('click', function (event) {
+        event.preventDefault(); // Prevent the default link behavior
+
+        // Toggle the display property of the dropdown menu
+        if (dropdownMenu.style.display === 'none' || dropdownMenu.style.display === '') {
+            dropdownMenu.style.display = 'block';
+        } else {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+
+    // Optional: Close the dropdown if the user clicks outside of it
+    document.addEventListener('click', function (event) {
+        if (!dropdownToggle.contains(event.target) && !dropdownMenu.contains(event.target)) {
+            dropdownMenu.style.display = 'none';
+        }
+    });
+});
+</script>
+</body>
+</html>

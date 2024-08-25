@@ -1,0 +1,86 @@
+#include <Wire.h>
+#include <Adafruit_BMP085.h>  // Library for BMP180/BMP085 sensors
+#include <ESP8266WiFi.h>      // Library for WiFi connectivity
+#include <ESP8266WebServer.h> // Library for web server functionality
+
+// Sensor Setup
+Adafruit_BMP085 bmpInput;
+Adafruit_BMP085 bmpOutput;
+
+const int flowSensorPin = 2; // Pin where the flow sensor is connected
+volatile int pulseCount = 0;
+float calibrationFactor = 4.5;
+float flowRate = 0;
+float totalLiters = 0;
+
+// WiFi and Web Server Setup
+const char* ssid = "yourSSID";
+const char* password = "yourPASSWORD";
+ESP8266WebServer server(80);
+
+void IRAM_ATTR pulseCounter() {
+  pulseCount++;
+}
+
+void setup() {
+  Serial.begin(115200);
+
+  // Initialize sensors
+  if (!bmpInput.begin() || !bmpOutput.begin()) {
+    Serial.println("Could not find a valid BMP180 sensor!");
+    while (1) {}
+  }
+
+  // Initialize flow sensor
+  pinMode(flowSensorPin, INPUT_PULLUP);
+  attachInterrupt(digitalPinToInterrupt(flowSensorPin), pulseCounter, FALLING);
+
+  // Initialize WiFi
+  WiFi.begin(ssid, password);
+  while (WiFi.status() != WL_CONNECTED) {
+    delay(1000);
+    Serial.println("Connecting to WiFi...");
+  }
+  Serial.println("Connected to WiFi");
+
+  // Initialize web server
+  server.on("/", handleRoot);
+  server.begin();
+  Serial.println("Web server started");
+}
+
+void loop() {
+  server.handleClient();
+
+  // Calculate flow rate
+  static unsigned long previousMillis = 0;
+  unsigned long currentMillis = millis();
+  
+  if (currentMillis - previousMillis > 1000) {
+    previousMillis = currentMillis;
+    
+    flowRate = ((1000.0 / (millis() - previousMillis)) * pulseCount) / calibrationFactor;
+    pulseCount = 0;
+
+    totalLiters += flowRate / 60;
+  }
+}
+
+void handleRoot() {
+  String htmlPage = "<html><body>";
+  htmlPage += "<h1>Water Management System</h1>";
+  
+  // Fetch and display input and output water pressure
+  float inputPressure = bmpInput.readPressure() / 100.0; // Convert to hPa
+  float outputPressure = bmpOutput.readPressure() / 100.0;
+  
+  htmlPage += "<p>Input Water Pressure: " + String(inputPressure) + " hPa</p>";
+  htmlPage += "<p>Output Water Pressure: " + String(outputPressure) + " hPa</p>";
+  
+  // Display flow rate and total water passed
+  htmlPage += "<p>Flow Rate: " + String(flowRate) + " L/min</p>";
+  htmlPage += "<p>Total Water Passed: " + String(totalLiters) + " L</p>";
+  
+  htmlPage += "</body></html>";
+  server.send(200, "text/html", htmlPage);
+}
